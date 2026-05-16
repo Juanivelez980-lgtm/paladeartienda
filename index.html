@@ -505,6 +505,56 @@ textarea.co-input{resize:vertical;min-height:60px;font-family:inherit}
 .iab-warning{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:10001;display:flex;align-items:center;justify-content:center;padding:20px;font-family:inherit}
 .iab-warning.hidden{display:none}
 .iab-warning-inner{background:linear-gradient(160deg,#547692 0%,#3d5a73 100%);border-radius:16px;padding:24px 20px;max-width:340px;width:100%;box-shadow:0 12px 40px rgba(0,0,0,.4)}
+/* ═══ RECETAS ═══ */
+.recetas-section{font-family:'Montserrat',sans-serif}
+.recetas-hero{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#fdefd8 0%,#fbe2bd 100%);border-radius:18px;padding:18px 20px;margin-bottom:18px;border:2px solid #b07030}
+.recetas-hero-icon{font-size:38px;line-height:1;flex-shrink:0}
+.recetas-hero-title{font-size:22px;font-weight:800;margin:0;color:#8a3520;line-height:1.1}
+.recetas-hero-sub{font-size:13px;color:#a44a25;margin:4px 0 0;line-height:1.3}
+.recetas-filters{display:flex;gap:8px;margin-bottom:18px;overflow-x:auto;padding-bottom:4px;-webkit-overflow-scrolling:touch}
+.recetas-filter-chip{flex-shrink:0;padding:7px 14px;border:2px solid var(--muted);border-radius:999px;background:var(--card);color:var(--muted-fg);font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;white-space:nowrap}
+.recetas-filter-chip:hover{border-color:var(--azul);color:var(--azul)}
+.recetas-filter-chip.active{background:var(--azul);color:#fff;border-color:var(--azul)}
+.recetas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+@media(max-width:600px){.recetas-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
+.receta-card{background:var(--card);border:1px solid var(--muted);border-radius:16px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column}
+.receta-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.1);border-color:var(--azul)}
+.receta-thumb{aspect-ratio:1/1;position:relative;background:linear-gradient(135deg,#fdefd8,#f5c4b3);display:flex;align-items:center;justify-content:center;color:#8a3520;font-size:42px}
+.receta-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.receta-thumb-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.18);transition:background .2s}
+.receta-card:hover .receta-thumb-overlay{background:rgba(0,0,0,.3)}
+.receta-play{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;color:#1c1c1c;font-size:22px;padding-left:4px}
+.receta-tag{position:absolute;top:10px;left:10px;background:rgba(255,255,255,.95);color:#1c1c1c;font-size:11px;font-weight:700;padding:4px 10px;border-radius:999px;z-index:2}
+.receta-body{padding:12px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.receta-title{font-size:14px;font-weight:700;color:var(--fg);line-height:1.3;margin:0}
+.receta-meta{font-size:11px;color:var(--muted-fg);display:flex;align-items:center;gap:5px}
+.receta-prod-chip{margin-top:auto;font-size:11px;color:var(--azul);background:rgba(84,118,146,.1);padding:5px 9px;border-radius:8px;align-self:flex-start;font-weight:600;line-height:1.3}
+.recetas-empty{text-align:center;padding:60px 20px}
+/* Modal de receta */
+.receta-modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10005;display:flex;align-items:flex-end;justify-content:center;padding:0}
+@media(min-width:600px){.receta-modal-overlay{align-items:center;padding:20px}}
+.receta-modal-overlay.hidden{display:none}
+.receta-modal-sheet{background:var(--card);border-radius:20px 20px 0 0;width:100%;max-width:540px;max-height:94vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 -8px 40px rgba(0,0,0,.3)}
+@media(min-width:600px){.receta-modal-sheet{border-radius:18px;max-height:90vh}}
+.receta-modal-hdr{display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid var(--muted);position:sticky;top:0;background:var(--card);z-index:1;gap:10px;flex-shrink:0}
+.receta-modal-title{flex:1;font-size:16px;font-weight:700;margin:0;color:var(--azul-dark);line-height:1.3}
+.receta-modal-close{background:var(--muted);border:none;border-radius:50%;width:32px;height:32px;font-size:14px;cursor:pointer;color:var(--fg);display:flex;align-items:center;justify-content:center;font-family:inherit;flex-shrink:0}
+.receta-modal-body{padding:14px 16px;overflow-y:auto;flex:1;-webkit-overflow-scrolling:touch}
+.receta-prep-time{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted-fg);margin-bottom:10px;padding:8px 12px;background:var(--muted);border-radius:8px}
+.receta-cantidades-box{background:#fdefd8;border:1px solid #b07030;border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:#8a3520;line-height:1.5;white-space:pre-line}
+.receta-cantidades-box .receta-cantidades-title{font-weight:700;margin-bottom:6px;display:block}
+.receta-ig-embed{margin-bottom:14px;border-radius:10px;overflow:hidden}
+.receta-ig-embed iframe,.receta-ig-embed blockquote{max-width:100%!important;width:100%!important;margin:0 auto!important}
+.receta-prod-link{display:flex;align-items:center;gap:12px;padding:12px 14px;background:rgba(84,118,146,.08);border:1.5px solid var(--azul);border-radius:12px;cursor:pointer;transition:all .2s}
+.receta-prod-link:hover{background:rgba(84,118,146,.15);transform:translateX(2px)}
+.receta-prod-link-icon{font-size:22px;flex-shrink:0}
+.receta-prod-link-info{flex:1}
+.receta-prod-link-label{font-size:11px;color:var(--muted-fg);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:2px}
+.receta-prod-link-name{font-size:14px;font-weight:700;color:var(--azul-dark);line-height:1.3}
+.receta-prod-link-arrow{font-size:18px;color:var(--azul);flex-shrink:0}
+/* Badge "Tiene receta" en cards de producto */
+.receta-badge-prod{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#fdefd8,#fbe2bd);color:#8a3520;font-size:11px;font-weight:700;padding:4px 9px;border-radius:8px;margin-top:6px;border:1px solid #b07030;cursor:pointer}
+.receta-badge-prod:hover{background:#fbe2bd}
 
 /* ── BUSCADOR ── */
 .search-wrap{position:relative;margin-bottom:22px}
@@ -1221,6 +1271,7 @@ body.cart-open #cart-fab,body.cart-open #chat-fab{display:none!important}
   <div class="may-tabs-wrap" id="mainTabs">
     <button class="may-tab active" id="tabMinorista" onclick="switchTab('minorista')">🛒 Lista Minorista</button>
     <button class="may-tab" id="tabMayorista" onclick="switchTab('mayorista')">📦 Lista Mayorista</button>
+    <button class="may-tab" id="tabRecetas" onclick="switchTab('recetas')">🍴 Recetas</button>
   </div>
 </div>
 <div style="max-width:1100px;margin:0 auto;padding:18px 20px" id="mainContainer">
@@ -1330,6 +1381,26 @@ body.cart-open #cart-fab,body.cart-open #chat-fab{display:none!important}
 </div>
 
 <!-- ── SECCIÓN LISTA MAYORISTA ── -->
+<!-- ═══ SECCIÓN RECETAS ═══ -->
+<div style="max-width:1100px;margin:0 auto;padding:0 20px 30px;display:none" id="recetasSection" class="recetas-section">
+  <div class="recetas-hero">
+    <div class="recetas-hero-icon">🍴</div>
+    <div>
+      <h1 class="recetas-hero-title">Recetas y videos</h1>
+      <p class="recetas-hero-sub">Ideas para aprovechar nuestros productos al máximo</p>
+    </div>
+  </div>
+  <div class="recetas-filters" id="recetasFilters">
+    <button class="recetas-filter-chip active" data-cat="">Todas</button>
+  </div>
+  <div id="recetasGrid" class="recetas-grid"></div>
+  <div id="recetasEmpty" class="recetas-empty hidden">
+    <div style="font-size:42px;margin-bottom:10px">🍴</div>
+    <div style="font-size:15px;font-weight:600;color:var(--azul-dark);margin-bottom:4px">Aún no hay recetas cargadas</div>
+    <div style="font-size:13px;color:var(--muted-fg)">Pronto vamos a publicar ideas para sacarle el jugo a nuestros productos</div>
+  </div>
+</div>
+
 <div style="max-width:1100px;margin:0 auto;padding:0 20px 30px" id="mayoristaSection" class="mayorista-section">
   <!-- Avisos de condiciones -->
   <div class="mayorista-badge">
@@ -1853,6 +1924,13 @@ function renderCard(p,prefix){
   const acumInfo=acumLbl?`<span class="acum-badge">🛒 ${acumLbl}</span>`:'';
   h+=`<div class="qty-row"><button class="qty-btn" onclick="chgQty('${id}',-1)">−</button><span class="qty-val" id="${id}_q">1</span><button class="qty-btn" onclick="chgQty('${id}',1)">+</button>${acumInfo}</div>`;
   h+=`<button class="add-btn" id="${id}_ab" onclick="addToCart(${p[0]},'${id}')">🛒 Agregar al pedido</button>`;
+  // Badge "Ver receta" si el producto está vinculado a alguna receta
+  if (typeof _productoTieneReceta === 'function') {
+    const recInfo = _productoTieneReceta(p[0], p[1]);
+    if (recInfo) {
+      h += `<div class="receta-badge-prod" onclick="event.stopPropagation();abrirReceta(${recInfo.idx})" title="Ver receta">🍴 Ver receta: ${recInfo.receta.titulo}</div>`;
+    }
+  }
   // Trash + edit buttons — only shown when item is in cart
   const cartItem=cart.find(i=>i.pid===p[0]);
   if(cartItem){
@@ -2602,6 +2680,16 @@ function sincronizarDesdeSheets(){
       renderCatsUI();
       renderCarruseles();
       hideLoader();
+      // Cargar recetas en background (no bloquea la UI)
+      if (typeof cargarRecetas === 'function') {
+        cargarRecetas().then(function() {
+          // Re-render del catálogo si hay recetas (para mostrar badges)
+          if (RECETAS && RECETAS.length && typeof renderCatsUI === 'function') {
+            renderCatsUI();
+            if (activeCatId && typeof selectCat === 'function') selectCat(activeCatId);
+          }
+        });
+      }
     }
 
     // Cargar directamente desde Apps Script JSONP (referencia la hoja por nombre, no GID)
@@ -2633,6 +2721,14 @@ history.replaceState({view:'home'},'');
 
 window.addEventListener('popstate',function(e){
   const st=e.state||{view:'home'};
+
+  // 0. Si el modal de receta está abierto → cerrarlo (prioridad alta porque está sobre otros)
+  const recetaModalOv=document.getElementById('recetaModalOverlay');
+  if(recetaModalOv && !recetaModalOv.classList.contains('hidden')){
+    cerrarRecetaModal();
+    history.pushState({view:'home'},'');
+    return;
+  }
 
   // 0. Si el checkout está abierto → cerrarlo
   const checkoutOverlay=document.getElementById('checkoutOverlay');
@@ -3542,14 +3638,20 @@ function switchTab(tab) {
   currentTab = tab;
   const minSection = document.getElementById('mainContainer');
   const maySection = document.getElementById('mayoristaSection');
+  const recSection = document.getElementById('recetasSection');
   const tabMin = document.getElementById('tabMinorista');
   const tabMay = document.getElementById('tabMayorista');
+  const tabRec = document.getElementById('tabRecetas');
   const fabMin = document.getElementById('cart-fab');
   const fabMay = document.getElementById('cart-fab-may');
+  // Reset
+  if (tabMin) tabMin.classList.remove('active');
+  if (tabMay) tabMay.classList.remove('active');
+  if (tabRec) tabRec.classList.remove('active');
   if (tab === 'mayorista') {
     if (minSection) minSection.style.display = 'none';
     if (maySection) maySection.classList.add('active');
-    if (tabMin) tabMin.classList.remove('active');
+    if (recSection) recSection.style.display = 'none';
     if (tabMay) tabMay.classList.add('active');
     if (fabMin) fabMin.style.display = 'none';
     if (fabMay) fabMay.style.display = 'flex';
@@ -3562,11 +3664,22 @@ function switchTab(tab) {
     } else {
       renderMayUI();
     }
+  } else if (tab === 'recetas') {
+    if (minSection) minSection.style.display = 'none';
+    if (maySection) maySection.classList.remove('active');
+    if (recSection) recSection.style.display = '';
+    if (tabRec) tabRec.classList.add('active');
+    if (fabMin) fabMin.style.display = 'none';
+    if (fabMay) fabMay.style.display = 'none';
+    // Mantener WA minorista en recetas (es lo más probable que el cliente quiera)
+    const waHeader = document.querySelector('.social-btn[title^="WhatsApp"]');
+    if (waHeader) { waHeader.href = 'https://wa.me/' + WA_MINORISTA; waHeader.title = 'WhatsApp Minorista'; }
+    if (typeof _mostrarRecetas === 'function') _mostrarRecetas();
   } else {
     if (minSection) minSection.style.display = '';
     if (maySection) maySection.classList.remove('active');
+    if (recSection) recSection.style.display = 'none';
     if (tabMin) tabMin.classList.add('active');
-    if (tabMay) tabMay.classList.remove('active');
     if (fabMin) fabMin.style.display = 'flex';
     if (fabMay) fabMay.style.display = 'none';
     // Restaurar botón WA del header al número minorista
@@ -4789,7 +4902,313 @@ function _coMarkRequired(id) {
   el.addEventListener('input', function(){ el.style.borderColor = ''; }, {once:true});
 }
 
+// ═══════════════════════════════════════════
+// SISTEMA DE RECETAS
+// ═══════════════════════════════════════════
+
+var RECETAS = [];
+var _recetasCargadas = false;
+var _recetasFiltroActivo = '';
+var _ultimaCatRecetas = '';
+var _instagramEmbedScriptLoaded = false;
+
+// URL de la hoja "recetas" — usa gviz/tq para resolver por nombre
+const RECETAS_URL = 'https://docs.google.com/spreadsheets/d/1aANKgaQFoiAixKQvPlRpZ0_PBQhES-iBWqOG1bsuLyg/gviz/tq?tqx=out:csv&sheet=recetas';
+
+function _parseCSVLine(line) {
+  // Simple CSV parser que respeta comillas
+  const out = [];
+  let cur = '', inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (inQ && line[i+1] === '"') { cur += '"'; i++; }
+      else inQ = !inQ;
+    } else if (ch === ',' && !inQ) {
+      out.push(cur); cur = '';
+    } else {
+      cur += ch;
+    }
+  }
+  out.push(cur);
+  return out.map(s => s.trim());
+}
+
+function _parseRecetasCSV(text) {
+  const lines = text.split(/\r?\n/).filter(l => l.trim().length);
+  if (lines.length <= 1) return [];
+  const out = [];
+  // Saltar la fila de headers
+  for (let i = 1; i < lines.length; i++) {
+    const cols = _parseCSVLine(lines[i]);
+    const titulo = (cols[0] || '').trim();
+    const url = (cols[1] || '').trim();
+    if (!titulo || !url) continue;
+    out.push({
+      titulo: titulo,
+      url: url,
+      categoria: (cols[2] || '').trim(),
+      productos: (cols[3] || '').trim(),
+      tiempo: (cols[4] || '').trim(),
+      esVideo: /^si$/i.test((cols[5] || '').trim()),
+      cantidades: (cols[6] || '').trim()
+    });
+  }
+  return out;
+}
+
+function cargarRecetas() {
+  if (_recetasCargadas) return Promise.resolve(RECETAS);
+  return fetch(RECETAS_URL + '&t=' + Date.now(), { cache: 'no-store' })
+    .then(r => r.text())
+    .then(text => {
+      RECETAS = _parseRecetasCSV(text);
+      _recetasCargadas = true;
+      console.log('🍴 Paladear: ' + RECETAS.length + ' recetas cargadas');
+      return RECETAS;
+    })
+    .catch(err => {
+      console.warn('No se pudieron cargar las recetas:', err);
+      RECETAS = [];
+      _recetasCargadas = true;
+      return RECETAS;
+    });
+}
+
+function _getInstagramPostId(url) {
+  if (!url) return null;
+  const m = url.match(/instagram\.com\/(?:p|reel|tv)\/([A-Za-z0-9_-]+)/);
+  return m ? m[1] : null;
+}
+
+function _normalizeInstagramUrl(url) {
+  // Convertir cualquier URL de IG en una versión limpia (sin params)
+  const id = _getInstagramPostId(url);
+  if (!id) return url;
+  // Detectar si es reel o post
+  if (url.includes('/reel/')) return 'https://www.instagram.com/reel/' + id + '/';
+  if (url.includes('/tv/')) return 'https://www.instagram.com/tv/' + id + '/';
+  return 'https://www.instagram.com/p/' + id + '/';
+}
+
+function _renderFiltrosRecetas() {
+  const cats = [...new Set(RECETAS.map(r => r.categoria).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b, 'es'));
+  const cont = document.getElementById('recetasFilters');
+  if (!cont) return;
+  let h = '<button class="recetas-filter-chip ' + (_recetasFiltroActivo === '' ? 'active' : '') + '" data-cat="" onclick="filtrarRecetas(\'\')">Todas</button>';
+  cats.forEach(c => {
+    h += '<button class="recetas-filter-chip ' + (_recetasFiltroActivo === c ? 'active' : '') + '" data-cat="' + c + '" onclick="filtrarRecetas(\'' + c.replace(/'/g, "\\'") + '\')">' + c + '</button>';
+  });
+  cont.innerHTML = h;
+}
+
+function filtrarRecetas(cat) {
+  _recetasFiltroActivo = cat;
+  _renderFiltrosRecetas();
+  _renderRecetasGrid();
+}
+window.filtrarRecetas = filtrarRecetas;
+
+function _renderRecetasGrid() {
+  const grid = document.getElementById('recetasGrid');
+  const empty = document.getElementById('recetasEmpty');
+  if (!grid) return;
+  let recetas = RECETAS;
+  if (_recetasFiltroActivo) recetas = recetas.filter(r => r.categoria === _recetasFiltroActivo);
+  if (!recetas.length) {
+    grid.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+  let h = '';
+  recetas.forEach((r, i) => {
+    const idx = RECETAS.indexOf(r);
+    const ig = _getInstagramPostId(r.url);
+    const thumb = ig
+      ? '<img src="https://www.instagram.com/p/' + ig + '/media/?size=l" alt="' + _escHtml(r.titulo) + '" loading="lazy" onerror="this.style.display=\'none\';this.parentNode.classList.add(\'no-img\')">'
+      : '<span>🍴</span>';
+    const playBtn = r.esVideo ? '<div class="receta-thumb-overlay"><div class="receta-play">▶</div></div>' : '<div class="receta-thumb-overlay" style="background:rgba(0,0,0,0)"></div>';
+    const tag = r.categoria ? '<span class="receta-tag">' + _escHtml(r.categoria) + '</span>' : '';
+    let prodChip = '';
+    if (r.productos) {
+      const prods = _resolveRecetaProductos(r.productos);
+      if (prods.length) {
+        const nombres = prods.slice(0, 2).map(p => p[2].split(' ')[0]).join(', ');
+        prodChip = '<div class="receta-prod-chip">📦 ' + _escHtml(nombres) + (prods.length > 2 ? '...' : '') + '</div>';
+      }
+    }
+    const meta = r.tiempo ? '<div class="receta-meta">⏱ ' + _escHtml(r.tiempo) + '</div>' : '';
+    h += '<div class="receta-card" onclick="abrirReceta(' + idx + ')">' +
+      '<div class="receta-thumb">' + tag + thumb + playBtn + '</div>' +
+      '<div class="receta-body">' +
+        '<div class="receta-title">' + _escHtml(r.titulo) + '</div>' +
+        meta +
+        prodChip +
+      '</div>' +
+    '</div>';
+  });
+  grid.innerHTML = h;
+}
+
+function _escHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// Resolver IDs/rubros del campo "productos" en productos reales del catálogo
+function _resolveRecetaProductos(refs) {
+  if (!refs) return [];
+  const tokens = refs.split(',').map(s => s.trim()).filter(Boolean);
+  const found = [];
+  const seen = new Set();
+  tokens.forEach(token => {
+    const num = parseInt(token, 10);
+    if (!isNaN(num) && String(num) === token) {
+      // Es un ID numérico → buscar por productId
+      const match = PRODS.find(p => {
+        const pid = p[12] && p[12].productId;
+        return String(pid) === token;
+      });
+      if (match && !seen.has(match[0])) { found.push(match); seen.add(match[0]); }
+    } else {
+      // Es un nombre de rubro → buscar todos los productos del rubro
+      const cat = CATS.find(c => c.n.toLowerCase() === token.toLowerCase());
+      if (cat) {
+        PRODS.filter(p => p[1] === cat.id).forEach(p => {
+          if (!seen.has(p[0])) { found.push(p); seen.add(p[0]); }
+        });
+      } else {
+        console.warn('Receta: "' + token + '" no es un ID válido ni un rubro existente');
+      }
+    }
+  });
+  return found;
+}
+
+function abrirReceta(idx) {
+  const r = RECETAS[idx];
+  if (!r) return;
+  document.getElementById('recetaModalTitle').textContent = r.titulo;
+  const body = document.getElementById('recetaModalBody');
+  let html = '';
+  // Tiempo de preparación
+  if (r.tiempo) html += '<div class="receta-prep-time">⏱ Tiempo: ' + _escHtml(r.tiempo) + '</div>';
+  // Cantidades / ingredientes rápidos
+  if (r.cantidades) {
+    html += '<div class="receta-cantidades-box"><span class="receta-cantidades-title">📝 Ingredientes</span>' + _escHtml(r.cantidades) + '</div>';
+  }
+  // Embed de Instagram
+  const url = _normalizeInstagramUrl(r.url);
+  html += '<div class="receta-ig-embed"><blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="' + url + '" style="background:#FFF;border:0;border-radius:3px;margin:0;max-width:540px;min-width:280px;width:100%;padding:0"></blockquote></div>';
+  // Producto vinculado (clickeable)
+  const prods = _resolveRecetaProductos(r.productos);
+  if (prods.length === 1) {
+    const p = prods[0];
+    html += '<div class="receta-prod-link" onclick="_irAProductoDesdeReceta(' + p[0] + ',\'' + p[1] + '\')">' +
+      '<div class="receta-prod-link-icon">🛒</div>' +
+      '<div class="receta-prod-link-info">' +
+        '<div class="receta-prod-link-label">Producto de esta receta</div>' +
+        '<div class="receta-prod-link-name">' + _escHtml(p[2]) + '</div>' +
+      '</div>' +
+      '<div class="receta-prod-link-arrow">→</div>' +
+    '</div>';
+  } else if (prods.length > 1) {
+    html += '<div style="font-size:12px;color:var(--muted-fg);font-weight:600;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Productos de esta receta</div>';
+    prods.slice(0, 6).forEach(p => {
+      html += '<div class="receta-prod-link" style="margin-bottom:6px" onclick="_irAProductoDesdeReceta(' + p[0] + ',\'' + p[1] + '\')">' +
+        '<div class="receta-prod-link-icon">🛒</div>' +
+        '<div class="receta-prod-link-info"><div class="receta-prod-link-name">' + _escHtml(p[2]) + '</div></div>' +
+        '<div class="receta-prod-link-arrow">→</div>' +
+      '</div>';
+    });
+  }
+  body.innerHTML = html;
+  document.getElementById('recetaModalOverlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  if (!history.state || history.state.view !== 'recetaModal') {
+    history.pushState({ view: 'recetaModal' }, '');
+  }
+  // Cargar el script de embeds de Instagram
+  _loadInstagramEmbedScript();
+}
+window.abrirReceta = abrirReceta;
+
+function cerrarRecetaModal() {
+  document.getElementById('recetaModalOverlay').classList.add('hidden');
+  document.body.style.overflow = '';
+  document.getElementById('recetaModalBody').innerHTML = '';
+}
+window.cerrarRecetaModal = cerrarRecetaModal;
+
+function _irAProductoDesdeReceta(pid, catId) {
+  cerrarRecetaModal();
+  switchTab('minorista');
+  setTimeout(function() {
+    if (typeof selectCat === 'function') selectCat(catId, pid);
+  }, 100);
+}
+window._irAProductoDesdeReceta = _irAProductoDesdeReceta;
+
+function _loadInstagramEmbedScript() {
+  if (_instagramEmbedScriptLoaded && window.instgrm) {
+    window.instgrm.Embeds.process();
+    return;
+  }
+  if (document.getElementById('instagramEmbedScript')) {
+    if (window.instgrm) window.instgrm.Embeds.process();
+    return;
+  }
+  const sc = document.createElement('script');
+  sc.id = 'instagramEmbedScript';
+  sc.async = true;
+  sc.src = 'https://www.instagram.com/embed.js';
+  sc.onload = function() {
+    _instagramEmbedScriptLoaded = true;
+    if (window.instgrm) window.instgrm.Embeds.process();
+  };
+  document.body.appendChild(sc);
+}
+
+// Mostrar/ocultar sección recetas + cargar si es la primera vez
+function _mostrarRecetas() {
+  cargarRecetas().then(function() {
+    _renderFiltrosRecetas();
+    _renderRecetasGrid();
+  });
+}
+
+// Verificar si un producto tiene receta vinculada
+function _productoTieneReceta(pid, catId) {
+  if (!RECETAS || !RECETAS.length) return null;
+  // Buscar el productId numérico del producto (no el pid interno)
+  const prod = PRODS.find(p => p[0] === pid);
+  if (!prod) return null;
+  const productIdNum = prod[12] && prod[12].productId;
+  for (let i = 0; i < RECETAS.length; i++) {
+    const r = RECETAS[i];
+    if (!r.productos) continue;
+    const tokens = r.productos.split(',').map(s => s.trim());
+    for (const token of tokens) {
+      const num = parseInt(token, 10);
+      if (!isNaN(num) && String(num) === token && String(num) === String(productIdNum)) {
+        return { idx: i, receta: r };
+      }
+      // Rubro
+      const cat = CATS.find(c => c.n.toLowerCase() === token.toLowerCase());
+      if (cat && cat.id === catId) {
+        return { idx: i, receta: r };
+      }
+    }
+  }
+  return null;
+}
+window._productoTieneReceta = _productoTieneReceta;
+
 })(); // fin IIFE
+
+
 // Si el usuario toca "Pedir por WhatsApp" sin internet, guardamos el pedido
 // y lo enviamos cuando vuelva la conexión.
 
@@ -5314,6 +5733,17 @@ window.copiarLinkParaNavegador = function() {
         📲 Al instalarla tenés el catálogo disponible aunque no tengas internet
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ═══ MODAL RECETA — INSTAGRAM EMBED ═══ -->
+<div id="recetaModalOverlay" class="receta-modal-overlay hidden" onclick="if(event.target===this)cerrarRecetaModal()">
+  <div class="receta-modal-sheet">
+    <div class="receta-modal-hdr">
+      <h2 id="recetaModalTitle" class="receta-modal-title">Receta</h2>
+      <button class="receta-modal-close" onclick="cerrarRecetaModal()" title="Cerrar">✕</button>
+    </div>
+    <div class="receta-modal-body" id="recetaModalBody"></div>
   </div>
 </div>
 
