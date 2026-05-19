@@ -8,11 +8,19 @@ const CACHE_VERSION = 'paladear-v3';
 const SHELL_FILES = [
   '/paladeartienda/',
   '/paladeartienda/index.html',
-  '/paladeartienda/android-chrome-192x192.png',
-  '/paladeartienda/android-chrome-512x512.png',
-  '/paladeartienda/apple-touch-icon.png',
-  '/paladeartienda/favicon-32x32.png',
-  '/paladeartienda/og-image.jpg',
+  '/paladeartienda/assets/android-chrome-192x192.png',
+  '/paladeartienda/assets/android-chrome-512x512.png',
+  '/paladeartienda/assets/apple-touch-icon.png',
+  '/paladeartienda/assets/favicon-32x32.png',
+  '/paladeartienda/assets/favicon.ico',
+  '/paladeartienda/assets/favicon-16x16.png',
+  '/paladeartienda/assets/favicon-48x48.png',
+  '/paladeartienda/assets/favicon-96x96.png',
+  '/paladeartienda/assets/favicon-128x128.png',
+  '/paladeartienda/manifest.json',
+  '/paladeartienda/robots.txt',
+  '/paladeartienda/sitemap.txt',
+  '/paladeartienda/assets/og-image.jpg',
 ];
 
 // ── INSTALL ─────────────────────────────────────────────
@@ -20,7 +28,7 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_VERSION)
       .then(cache => cache.addAll(SHELL_FILES))
-      .catch(err => console.warn('[SW] Error cacheando shell:', err))
+      .catch(err => console.error('[SW] Error cacheando shell:', err))
   );
   self.skipWaiting();
 });

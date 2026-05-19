@@ -1,1 +1,6 @@
 https://paladear.github.io/paladeartienda/
+https://paladear.github.io/paladeartienda/?seccion=minorista
+https://paladear.github.io/paladeartienda/?seccion=mayorista
+https://paladear.github.io/paladeartienda/?seccion=recetas
+https://paladear.github.io/paladeartienda/?seccion=mix
+https://paladear.github.io/paladeartienda/?seccion=granola

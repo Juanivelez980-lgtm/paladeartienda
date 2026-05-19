@@ -13,18 +13,18 @@
   "categories": ["shopping", "food"],
   "icons": [
     {
-      "src": "favicon-96x96.png",
+      "src": "assets/favicon-96x96.png",
       "sizes": "96x96",
       "type": "image/png"
     },
     {
-      "src": "android-chrome-192x192.png",
+      "src": "assets/android-chrome-192x192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "android-chrome-512x512.png",
+      "src": "assets/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
@@ -37,14 +37,14 @@
       "short_name": "Tienda",
       "description": "Ver catálogo minorista",
       "url": "/paladeartienda/?seccion=minorista&utm_source=pwa_shortcut",
-      "icons": [{ "src": "android-chrome-192x192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
     },
     {
       "name": "Mayorista",
       "short_name": "Mayorista",
       "description": "Ver catálogo mayorista",
       "url": "/paladeartienda/?seccion=mayorista&utm_source=pwa_shortcut",
-      "icons": [{ "src": "android-chrome-192x192.png", "sizes": "192x192" }]
+      "icons": [{ "src": "assets/android-chrome-192x192.png", "sizes": "192x192" }]
     }
   ]
 }
