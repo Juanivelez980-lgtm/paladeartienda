@@ -41,19 +41,99 @@ def leer_categorias(conn):
     cursor.execute(query)
     return {row.codigo: (row.nombre or "").strip() for row in cursor.fetchall()}
 
-def leer_info_csv(path):
-    """Lee un archivo CSV info existente y devuelve dict por código de artículo"""
+def normalizar_nombre(nombre):
+    """Normaliza un nombre para comparación: mayúsculas, sin espacios extras, sin tildes"""
+    import unicodedata
+    n = nombre.upper().strip()
+    n = n.replace("  ", " ")
+    # sacar tildes
+    n = unicodedata.normalize("NFKD", n).encode("ASCII", "ignore").decode("ASCII")
+    return n
+
+def leer_info_csv(path, productos_db=None):
+    """Lee un archivo CSV info existente y devuelve dict por código de artículo.
+    Empareja por nombre normalizado para corregir códigos desactualizados.
+    Si una fila del CSV tiene un código que existe en la base pero el nombre
+    no coincide, se descarta su metadata (imagen, sabores, info) porque
+    pertenecía a otro producto."""
     info = {}
     if not os.path.exists(path):
         return info
+
+    filas_viejas = []
     with open(path, "r", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         for row in reader:
+            filas_viejas.append(row)
+
+    if not productos_db:
+        for row in filas_viejas:
             for col in ["Artículo", "Articulo"]:
                 cod = row.get(col, "").strip()
                 if cod and cod.isdigit():
                     info[int(cod)] = row
                     break
+        return info
+
+    # Construir índice: nombre normalizado (CSV) -> fila
+    nombre_a_fila = {}
+    for row in filas_viejas:
+        for col_nombre in ["nombre", "Nombre"]:
+            n = row.get(col_nombre, "").strip()
+            if n:
+                nn = normalizar_nombre(n)
+                nombre_a_fila[nn] = row
+                break
+
+    # Construir mapa: código base -> nombre normalizado en base
+    cod_a_nombre_db = {}
+    for p in productos_db:
+        nn = normalizar_nombre(p.nombre or "")
+        if nn:
+            cod_a_nombre_db[p.codigo] = nn
+
+    # Limpiar filas del CSV cuyo código exista en la base pero con nombre distinto
+    for row in filas_viejas:
+        cod_viejo = None
+        for col_cod in ["Artículo", "Articulo"]:
+            c = row.get(col_cod, "").strip()
+            if c and c.isdigit():
+                cod_viejo = int(c)
+                break
+        if cod_viejo is None:
+            continue
+        nombre_viejo = ""
+        for col_nombre in ["nombre", "Nombre"]:
+            n = row.get(col_nombre, "").strip()
+            if n:
+                nombre_viejo = n
+                break
+        if not nombre_viejo:
+            continue
+        if cod_viejo in cod_a_nombre_db:
+            nombre_esperado = cod_a_nombre_db[cod_viejo]
+            nombre_normalizado = normalizar_nombre(nombre_viejo)
+            if nombre_normalizado != nombre_esperado:
+                # El código existe en la base pero con OTRO nombre →
+                # esta fila tiene metadata de otro producto, descartarla
+                for campo in ["imagen", "Imagen", "info", "sabores", "Sabores", "cantidades"]:
+                    if campo in row:
+                        row[campo] = ""
+
+    # Para cada producto de la base, buscar su fila por nombre
+    for p in productos_db:
+        nombre_db = normalizar_nombre(p.nombre or "")
+        if not nombre_db:
+            continue
+        fila = nombre_a_fila.get(nombre_db)
+        if fila is not None:
+            cod = p.codigo
+            info[cod] = fila
+            for col_cod in ["Artículo", "Articulo"]:
+                if col_cod in fila:
+                    fila[col_cod] = str(cod)
+                    break
+
     return info
 
 def leer_precios_csv(path):
@@ -140,6 +220,16 @@ def generar_precios_mayorista(productos, categorias, repo_dir):
             stock = max(0, int(prod.stock_total or 0))
             writer.writerow(["", "", rubro, str(cod), nombre, precio, str(stock)])
 
+def _info_coincide(registro, nombre_esperado, cols_nombre):
+    """Verifica que un registro de info existente corresponda al producto esperado."""
+    if not registro:
+        return False
+    for col in cols_nombre:
+        n = registro.get(col, "").strip()
+        if n:
+            return normalizar_nombre(n) == normalizar_nombre(nombre_esperado)
+    return False
+
 def generar_info_minorista(productos, info_existente, repo_dir):
     """Genera info-min.csv preservando datos existentes + stock"""
     out_path = os.path.join(repo_dir, "info-min.csv")
@@ -152,15 +242,16 @@ def generar_info_minorista(productos, info_existente, repo_dir):
             nombre = (prod.nombre or "").strip()
             stock = max(0, int(prod.stock_total or 0))
             existente = info_existente.get(cod, {})
+            coincide = _info_coincide(existente, nombre, ["nombre", "Nombre"])
             row = {
-                "nombre": existente.get("nombre", nombre),
-                "cantidades": existente.get("cantidades", "1 UNIDAD"),
-                "info": existente.get("info", ""),
-                "sabores": existente.get("sabores", ""),
-                "imagen": existente.get("imagen", ""),
-                "mix": existente.get("mix", ""),
+                "nombre": nombre,
+                "cantidades": existente.get("cantidades", "1 UNIDAD") if coincide else "1 UNIDAD",
+                "info": existente.get("info", "") if coincide else "",
+                "sabores": existente.get("sabores", "") if coincide else "",
+                "imagen": existente.get("imagen", "") if coincide else "",
+                "mix": existente.get("mix", "") if coincide else "",
                 "Artículo": str(cod),
-                "Estado": existente.get("Estado", "🟢 ok"),
+                "Estado": existente.get("Estado", "🟢 ok") if coincide else "🟢 ok",
                 "Stock": str(stock),
             }
             writer.writerow(row)
@@ -177,12 +268,13 @@ def generar_info_mayorista(productos, info_existente, repo_dir):
             nombre = (prod.nombre or "").strip()
             stock = max(0, int(prod.stock_total or 0))
             existente = info_existente.get(cod, {})
+            coincide = _info_coincide(existente, nombre, ["Nombre", "nombre"])
             row = {
                 "Articulo": str(cod),
-                "Nombre": existente.get("Nombre", nombre),
-                "Bulto": existente.get("Bulto", ""),
-                "Sabores": existente.get("Sabores", ""),
-                "Imagen": existente.get("Imagen", ""),
+                "Nombre": nombre,
+                "Bulto": existente.get("Bulto", "") if coincide else "",
+                "Sabores": existente.get("Sabores", "") if coincide else "",
+                "Imagen": existente.get("Imagen", "") if coincide else "",
                 "Stock": str(stock),
             }
             writer.writerow(row)
@@ -211,8 +303,8 @@ def main():
 
     # Leer CSVs existentes para preservar info (descripciones, imágenes)
     print("Leyendo CSVs existentes...")
-    info_min = leer_info_csv(os.path.join(REPO_DIR, "info-min.csv"))
-    info_may = leer_info_csv(os.path.join(REPO_DIR, "info-may.csv"))
+    info_min = leer_info_csv(os.path.join(REPO_DIR, "info-min.csv"), productos)
+    info_may = leer_info_csv(os.path.join(REPO_DIR, "info-may.csv"), productos)
 
     # Generar CSVs actualizados
     print("Generando CSVs actualizados...")
