@@ -24,7 +24,7 @@ def leer_stock_desde_bd(conn):
         SELECT a.codigo, a.nombre, a.precio1, a.precio2, a.familia,
                COALESCE(SUM(s.cantidad), 0) AS stock_total
         FROM articulos a
-        LEFT JOIN stock s ON a.codigo = s.articulo
+        LEFT JOIN stock_ppp s ON a.codigo = s.articulo
         WHERE a.eliminado = 0 AND a.codigo > 0 AND a.nombre != 'NULO'
         GROUP BY a.codigo, a.nombre, a.precio1, a.precio2, a.familia
         ORDER BY a.codigo
