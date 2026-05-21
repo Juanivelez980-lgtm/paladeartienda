@@ -2456,7 +2456,7 @@ function sendChat(){
 /* ── CARGA DESDE SHEETS ── */
 // URL pública de la hoja "Info" como CSV. Se completa cuando la publiques.
 // Va a ser algo tipo: https://docs.google.com/spreadsheets/d/e/XXXXXX/pub?gid=YYY&single=true&output=csv
-const INFO_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSFtCac_jbHBZvltBZ8VgHcdHD6Ftp5r1f79HuWr33H7d0h4YoCY0vFOrNWaubLa4RcBdXr9qXgwLmZ/pub?gid=1603230501&single=true&output=csv';
+const INFO_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT2RlZaSdlV-aaVGUw7YI9MVE1MHjopNhbjTOfWBZwPNo_clhJUao2KNcNowEzsdBGpd2Bh5-2rt1aH/pub?gid=1603230501&single=true&output=csv';
 
 function _parseCSV(csv){
   const rows=[];
@@ -2642,17 +2642,25 @@ function sincronizarDesdeSheets(){
       hideLoader();
     }
 
-    // Cargar desde el Sheet de prueba (CSV directo, sin Apps Script)
-    const minUrl = SHEET_BASE_URL + '?gid=762726903&single=true&output=csv&t=' + Date.now();
-    _cargarStockLocal('precios-min.csv').then(m => {
-      fetch(minUrl, { cache: 'no-store' })
-        .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
-        .then(csv => _procesarCSV(csv, m))
-        .catch(err => {
-          console.warn('⚠️ Error cargando precios:', err);
-          renderCatsUI(); renderCarruseles(); hideLoader();
-        });
-    });
+    // Cargar directamente desde Apps Script JSONP (referencia la hoja por nombre, no GID)
+    window.recibirPrecios=function(csv){ _cargarStockLocal('precios-min.csv').then(m=>_procesarCSV(csv,m)); };
+    let _retried=false;
+    function _cargarScript(){
+      const s=document.createElement('script');
+      s.onerror=()=>{
+        if(!_retried){
+          _retried=true;
+          console.warn('⚠️ Error cargando Sheet, reintentando en 3s...');
+          setTimeout(_cargarScript,3000);
+        } else {
+          console.warn('⚠️ Error cargando Sheet tras reintento');
+          renderCatsUI();renderCarruseles();hideLoader();
+        }
+      };
+      s.src=APPS_SCRIPT_URL+'?callback=recibirPrecios&t='+Date.now()+'&v='+Math.random().toString(36).slice(2);
+      document.head.appendChild(s);
+    }
+    _cargarScript();
   });
 }
 sincronizarDesdeSheets();
@@ -3550,7 +3558,7 @@ function _triggerMayoristaConfetti(){
 // Para obtenerlos: abrí el Sheet → hacé clic en la pestaña de cada hoja → fijate el gid=XXXXXXX en la URL
 const MAY_PRECIOS_GID = '545595949'; // Hoja 3 — Precios Mayorista (precio por unidad)
 const MAY_INFO_GID    = '896338689'; // Hoja 4 — Info Mayorista (col C = bultos)
-const SHEET_BASE_URL  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSFtCac_jbHBZvltBZ8VgHcdHD6Ftp5r1f79HuWr33H7d0h4YoCY0vFOrNWaubLa4RcBdXr9qXgwLmZ/pub';
+const SHEET_BASE_URL  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT2RlZaSdlV-aaVGUw7YI9MVE1MHjopNhbjTOfWBZwPNo_clhJUao2KNcNowEzsdBGpd2Bh5-2rt1aH/pub';
 // ▲▲▲ FIN CONFIGURACIÓN ▲▲▲
 // Número WhatsApp mayorista
 const WA_MAYORISTA = '5492615983065';
@@ -3691,8 +3699,8 @@ function cargarMayorista() {
       if (mob)  mob.innerHTML  = '';
     }
 
-    // Cargar desde el Sheet de prueba
-    const mayUrl = SHEET_BASE_URL + '?gid=545595949&single=true&output=csv&t=' + Date.now();
+    // Cargar por nombre de hoja (sin GID — "Mayorista" nunca cambia aunque cambies el Excel)
+    const mayUrl = 'https://docs.google.com/spreadsheets/d/1aANKgaQFoiAixKQvPlRpZ0_PBQhES-iBWqOG1bsuLyg/gviz/tq?tqx=out:csv&sheet=Mayorista&t=' + Date.now();
     const _fetchMay = () => _cargarStockLocal('precios-may.csv').then(sm => {
       return fetch(mayUrl, { cache: 'no-store' })
         .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
